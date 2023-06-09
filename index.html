@@ -1,0 +1,112 @@
+<!--3) Haga un programa que lea N tarjetas de datos A, B, C, D, E
+A = numero de cedula de identidad del alumno
+B = Nombre del Alumno
+C = Nota de matematicas
+D = Nota de fisica
+E = Nota de programacion
+
+Hallar:
+Nota promedio de cada materia.
+Numero de alumnos aprobados en cada materia.
+Numero de alumnos aplazados en cada materia.
+Numero de alumnos que aprobaron todas las materias.
+Numero de alumnos que aprobaron una sola materia
+Numero de alumnos que aprobaron dos materias
+Nota maxima en cada materia-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 3</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <h1>Tarjetas de datos</h1>
+    <label for="">Ingrese la cantidad de alumnos que desea registrar:</label>
+    <input type="number" id="cantidadAlumnos" required>
+    <button id="botonEnviar" class="btn btn-primary" type="button">Generar Formularios</button><br><br>
+    <div id="container"></div>
+</body>
+</html>
+
+<script>
+    var notasProgramacion=0, notasMatematica=0, notasFisica=0;
+    var alumnosAplazadosMatematicas=0;
+    var alumnosAplazadosFisica=0;
+    var alumnosAplazadosProgramacion=0;
+    var alumnosAprobadosMatematicas=0;
+    var alumnosAprobadosFisica=0;
+    var alumnosAprobadosProgramacion=0;
+    var notaMasAltaM=0, notaMasAltaF=0, notaMasAltaP=0;
+    var aprobados3=0, aprobados2=0, aprobados1=0;
+    var promedioProgramacion,promedioMatematica,promedioFisica;
+    document.getElementById("botonEnviar").onclick = function() {myScript()};
+    function myScript() {
+        var htmlElements = "";
+        cantidadAlumnos = document.getElementById('cantidadAlumnos').value;
+        for(i=0;i<cantidadAlumnos;i++) {
+            htmlElements += `<br><br><label>Número de cédula del alumno número ${i+1} :</label><br><br><input type="number" required id=${i} ><br><br><label>Nombre del alumno número ${i+1} :</label><br><br><input type="text" required id=${i} ><br><br><label>Nota de Matemáticas ${i+1} :</label><br><br><input type="number" required id=M${i} ><br><label>Nota de Física ${i+1} :</label><br><br><input type="number" required id=F${i} ><br><label>Nota de Programación ${i+1} :</label><br><br><input type="number" required id=P${i} ><br>`;
+
+        }
+        var container = document.getElementById("container");
+        container.innerHTML = htmlElements;
+        button = '<br><br><button id="segundoBoton" class="btn btn-primary">Calcular</button>';
+        container.innerHTML += button;
+        document.getElementById("segundoBoton").onclick = function() {segundoScript()};
+
+        function segundoScript() {
+            for(i=0;i<cantidadAlumnos;i++){
+                notasMatematica += parseFloat(document.getElementById(`M${i}`).value);
+                notasFisica += parseFloat(document.getElementById(`F${i}`).value);
+                notasProgramacion += parseFloat(document.getElementById(`P${i}`).value);
+                if(document.getElementById(`M${i}`).value > notaMasAltaM) {
+                    notaMasAltaM = document.getElementById(`M${i}`).value;
+                }
+                if(document.getElementById(`F${i}`).value > notaMasAltaF) {
+                    notaMasAltaF = document.getElementById(`F${i}`).value;
+                }
+                if(document.getElementById(`P${i}`).value > notaMasAltaP) {
+                    notaMasAltaP = document.getElementById(`P${i}`).value;
+                }
+                if(document.getElementById(`M${i}`).value >= 10) {
+                    alumnosAprobadosMatematicas++;
+                } else {
+                    alumnosAplazadosMatematicas++;
+                }
+                if(document.getElementById(`F${i}`).value >= 10) {
+                    alumnosAprobadosFisica++;
+                } else {
+                    alumnosAplazadosFisica++;
+                }
+                if(document.getElementById(`P${i}`).value >= 10) {
+                    alumnosAprobadosProgramacion++;
+                } else {
+                    alumnosAplazadosProgramacion++;
+                }
+
+                if(document.getElementById(`M${i}`).value >= 10 && document.getElementById(`F${i}`) >= 10 && document.getElementById(`P${i}`).value >= 10) {
+                    aprobados3++
+                } else if (document.getElementById(`M${i}`).value >= 10 && document.getElementById(`F${i}`).value < 10 && document.getElementById(`P${i}`).value >= 10 || document.getElementById(`M${i}`).value < 10 && document.getElementById(`F${i}`).value >= 10 && document.getElementById(`P${i}`).value >= 10 || document.getElementById(`M${i}`).value > 10 && document.getElementById(`F${i}`).value >= 10 && document.getElementById(`P${i}`).value < 10) {
+                    aprobados2++;
+                } else if (document.getElementById(`M${i}`).value < 10 && document.getElementById(`F${i}`).value < 10 && document.getElementById(`P${i}`).value >= 10 || document.getElementById(`M${i}`).value < 10 && document.getElementById(`F${i}`).value >= 10 && document.getElementById(`P${i}`).value < 10 || document.getElementById(`M${i}`).value >= 10 && document.getElementById(`F${i}`).value < 10 && document.getElementById(`P${i}`) < 10) {
+                    aprobados1++;
+                }
+            }
+            promedioMatematica = notasMatematica/cantidadAlumnos;
+            promedioFisica = notasFisica/cantidadAlumnos;
+            promedioProgramacion = notasProgramacion/cantidadAlumnos;
+            document.write("La nota promedio de Matemáticas fue de: "+promedioMatematica+"<br>La nota promedio de Física fue de: "+promedioFisica+"<br>La nota promedio de Programación fue de: "+promedioProgramacion+"<br>Los alumnos aprobados de Matemáticas fue de: "+alumnosAprobadosMatematicas+"<br>Los alumnos aprobados de Física fue de: "+alumnosAprobadosFisica+"<br>Los alumnos aprobados de Programación fue de: "+alumnosAprobadosProgramacion+"<br>Los alumnos reprobados de Matemáticas fue de: "+alumnosAplazadosMatematicas+"<br>Los alumnos reprobados de Física fue de: "+alumnosAplazadosFisica+"<br>Los alumnos reprobados de Programación fue de: "+alumnosAplazadosProgramacion+"<br>Número de alumnos que aprobaron tres materias: "+aprobados3+"<br>Número de alumnos que aprobaron dos materias: "+aprobados2+"<br>Número de alumnos que aprobaron una materia: "+aprobados1+"<br>Nota más alta de Matemáticas:"+notaMasAltaM+"<br>Nota más alta de Física:"+notaMasAltaF+"<br>Nota más alta de Programación:"+notaMasAltaP);
+            document.write("<button type='submit' onClick='refreshPage()'>Volver al Inicio</button>");
+    } }
+
+    function refreshPage(){
+    window.location.reload();
+} 
+
+</script> 
